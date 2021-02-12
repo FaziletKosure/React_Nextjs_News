@@ -1,7 +1,8 @@
 import Head from 'next/head'
 
 
-export default function Home() {
+export default function Home({data}) {
+  console.log(data);
   return (
     <div >
       <Head>
@@ -11,4 +12,22 @@ export default function Home() {
       <h1>Welcome to Next</h1>
     </div>
   )
+}
+
+
+export const getStaticProps = async ()=> {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=6`)
+  const data = await res.json()
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
+
+  return {
+    props: {
+      data
+    }, // will be passed to the page component as props
+  }
 }
